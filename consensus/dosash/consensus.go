@@ -355,24 +355,24 @@ func calcDifficultyByzantium(time uint64, parent *types.Header) *big.Int {
 	if x.Cmp(params.MinimumDifficulty) < 0 {
 		x.Set(params.MinimumDifficulty)
 	}
-	// calculate a fake block number for the ice-age delay:
-	//   https://github.com/doslink/EIPs/pull/669
-	//   fake_block_number = min(0, block.number - 3_000_000
-	fakeBlockNumber := new(big.Int)
-	if parent.Number.Cmp(big2999999) >= 0 {
-		fakeBlockNumber = fakeBlockNumber.Sub(parent.Number, big2999999) // Note, parent is 1 less than the actual block number
-	}
-	// for the exponential factor
-	periodCount := fakeBlockNumber
-	periodCount.Div(periodCount, expDiffPeriod)
-
-	// the exponential factor, commonly referred to as "the bomb"
-	// diff = diff + 2^(periodCount - 2)
-	if periodCount.Cmp(big1) > 0 {
-		y.Sub(periodCount, big2)
-		y.Exp(big2, y, nil)
-		x.Add(x, y)
-	}
+	//// calculate a fake block number for the ice-age delay:
+	////   https://github.com/doslink/EIPs/pull/669
+	////   fake_block_number = min(0, block.number - 3_000_000
+	//fakeBlockNumber := new(big.Int)
+	//if parent.Number.Cmp(big2999999) >= 0 {
+	//	fakeBlockNumber = fakeBlockNumber.Sub(parent.Number, big2999999) // Note, parent is 1 less than the actual block number
+	//}
+	//// for the exponential factor
+	//periodCount := fakeBlockNumber
+	//periodCount.Div(periodCount, expDiffPeriod)
+	//
+	//// the exponential factor, commonly referred to as "the bomb"
+	//// diff = diff + 2^(periodCount - 2)
+	//if periodCount.Cmp(big1) > 0 {
+	//	y.Sub(periodCount, big2)
+	//	y.Exp(big2, y, nil)
+	//	x.Add(x, y)
+	//}
 	return x
 }
 
@@ -411,17 +411,17 @@ func calcDifficultyHomestead(time uint64, parent *types.Header) *big.Int {
 	if x.Cmp(params.MinimumDifficulty) < 0 {
 		x.Set(params.MinimumDifficulty)
 	}
-	// for the exponential factor
-	periodCount := new(big.Int).Add(parent.Number, big1)
-	periodCount.Div(periodCount, expDiffPeriod)
-
-	// the exponential factor, commonly referred to as "the bomb"
-	// diff = diff + 2^(periodCount - 2)
-	if periodCount.Cmp(big1) > 0 {
-		y.Sub(periodCount, big2)
-		y.Exp(big2, y, nil)
-		x.Add(x, y)
-	}
+	//// for the exponential factor
+	//periodCount := new(big.Int).Add(parent.Number, big1)
+	//periodCount.Div(periodCount, expDiffPeriod)
+	//
+	//// the exponential factor, commonly referred to as "the bomb"
+	//// diff = diff + 2^(periodCount - 2)
+	//if periodCount.Cmp(big1) > 0 {
+	//	y.Sub(periodCount, big2)
+	//	y.Exp(big2, y, nil)
+	//	x.Add(x, y)
+	//}
 	return x
 }
 
